@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "PlantGainz",
-    "slug": "PlantGainz",
+    "slug": "plant-gainz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "plantgainz",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "6ea51141-8ad6-42cd-b03a-39268d440d48"
+      }
+    },
+    "owner": "jameslindfors-csumb"
   }
 }
