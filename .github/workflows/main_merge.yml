@@ -1,0 +1,30 @@
+# .github/workflows/main_merge.yml
+name: Check Main Merge Workflow
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and linting
+        run: |
+          npm run lint && npm jest -o
+        env:
+          CI: true
+
+      - name: Check if tests passed
+        if: ${{ failure() }}
+        run: echo "Tests failed, cannot merge to main branch"
+
+      - name: Check if linting passed
+        if: ${{ failure() }}
+        run: echo "Linting failed, cannot merge to main branch"

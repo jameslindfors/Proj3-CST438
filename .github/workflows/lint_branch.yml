@@ -1,0 +1,22 @@
+# .github/workflows/lint_branch.yml
+name: Lint Branch Workflow
+
+on:
+  push:
+    branches:
+      - '.*'
+
+jobs:
+  run-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm jest -o
+        env:
+          CI: true
