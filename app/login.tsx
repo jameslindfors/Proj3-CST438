@@ -3,13 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -18,108 +15,86 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   const handleLogin = () => {
-    // Implement login logic here
     console.log('Login with:', email, password);
-    // On successful login:
     router.replace('/(tabs)');
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardAvoidView}
-        >
-          <View style={styles.headerContainer}>
-            <Text style={styles.welcomeText}>Welcome to</Text>
-            <Text style={styles.appNameText}>iWetMyPlants</Text>
-            <Text style={styles.taglineText}>Your personal plant care companion</Text>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.welcomeText}>Welcome to</Text>
+          <Text style={styles.appNameText}>iWetMyPlants</Text>
+          <Text style={styles.taglineText}>Your personal plant care companion</Text>
+        </View>
+
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <Ionicons name="mail-outline" size={22} color="#76A97F" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
           </View>
 
-          <View style={styles.formContainer}>
-            <View style={[
-              styles.inputContainer,
-              isEmailFocused && styles.inputContainerFocused
-            ]}>
-              <Ionicons name="mail-outline" size={22} color="#76A97F" style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                onFocus={() => setIsEmailFocused(true)}
-                onBlur={() => setIsEmailFocused(false)}
+          <View style={styles.inputContainer}>
+            <Ionicons name="lock-closed-outline" size={22} color="#76A97F" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Ionicons
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={22}
+                color="#76A97F"
               />
-            </View>
-
-            <View style={[
-              styles.inputContainer,
-              isPasswordFocused && styles.inputContainerFocused
-            ]}>
-              <Ionicons name="lock-closed-outline" size={22} color="#76A97F" style={styles.inputIcon} />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-                onFocus={() => setIsPasswordFocused(true)}
-                onBlur={() => setIsPasswordFocused(false)}
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <Ionicons
-                  name={showPassword ? "eye-outline" : "eye-off-outline"}
-                  size={22}
-                  color="#76A97F"
-                />
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={styles.forgotPasswordContainer}>
-              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
+          </View>
 
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <TouchableOpacity style={styles.forgotPasswordContainer}>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <View style={styles.buttonContent}>
+              <Ionicons name="log-in-outline" size={24} color="#fff" style={styles.buttonIcon} />
               <Text style={styles.loginButtonText}>Log In</Text>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.socialButtonsContainer}>
+            <TouchableOpacity style={styles.socialButton}>
+              <Ionicons name="logo-google" size={24} color="#DB4437" />
             </TouchableOpacity>
-
-            <View style={styles.dividerContainer}>
-              <View style={styles.divider} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.divider} />
-            </View>
-
-            <View style={styles.socialButtonsContainer}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-google" size={24} color="#DB4437" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-apple" size={24} color="#000000" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-facebook" size={24} color="#3b5998" />
-              </TouchableOpacity>
-            </View>
           </View>
 
           <View style={styles.signupContainer}>
             <Text style={styles.noAccountText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/signup')}>
-              <Text style={styles.signupText}>Sign Up</Text>
+            <TouchableOpacity 
+              style={styles.signupButton}
+              onPress={() => router.push('/signup')}
+            >
+              <View style={styles.buttonContent}>
+                <Ionicons name="person-add-outline" size={18} color="#76A97F" style={styles.buttonIcon} />
+                <Text style={styles.signupText}>Sign Up</Text>
+              </View>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        </View>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -128,9 +103,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f2e5',
-  },
-  keyboardAvoidView: {
-    flex: 1,
+    padding: 20,
     justifyContent: 'center',
   },
   headerContainer: {
@@ -153,7 +126,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   formContainer: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -166,15 +139,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#eee',
   },
-  inputContainerFocused: {
-    borderColor: '#76A97F',
-    borderWidth: 1.5,
-    shadowColor: '#76A97F',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
   inputIcon: {
     marginRight: 10,
   },
@@ -182,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     fontSize: 16,
-    color: '#333',
+    color: '#1a1a1a',
   },
   eyeIcon: {
     padding: 8,
@@ -202,30 +166,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonIcon: {
+    marginRight: 10,
   },
   loginButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  divider: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#ddd',
-  },
-  dividerText: {
-    marginHorizontal: 15,
-    color: '#666',
   },
   socialButtonsContainer: {
     flexDirection: 'row',
@@ -239,7 +191,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
@@ -249,11 +200,15 @@ const styles = StyleSheet.create({
   signupContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 10,
+    alignItems: 'center',
+    marginTop: 20,
   },
   noAccountText: {
     color: '#666',
     fontSize: 16,
+  },
+  signupButton: {
+    marginLeft: 5,
   },
   signupText: {
     color: '#76A97F',
